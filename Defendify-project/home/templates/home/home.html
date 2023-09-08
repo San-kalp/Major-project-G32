@@ -14,7 +14,10 @@
   </head>
 
   <style>
-    
+    .contMain{
+      padding: 2vw 5vw;
+      background-color: black;
+    }
   </style>
 
   <body>
@@ -23,12 +26,12 @@
     <script src="/static/js/script.js" defer></script>
 
 
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <div class="container">
+    <nav class="navbar navbar-expand-md navbar-light bg-light" >
+        <div class="container" id="homeNav">
             <!-- Navbar brand or logo -->
             <a href="#" class="logo">
               <img
-                src="/static/images/logo.png"
+                src="/static/images/logo1.png"
                 width="30"
                 height="42"
                 alt="Cryptex logo"
@@ -51,9 +54,9 @@
                     <!-- <li class="nav-item">
                         <a class="navbar-link" href="#">About</a>
                     </li> -->
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="navbar-link" href="wallet">Wallet</a>
-                    </li>
+                    </li> -->
                     <!-- <li class="nav-item">
                       <a class="navbar-link" href="blogs">Blogs</a>
                     </li> -->
@@ -71,18 +74,27 @@
                     <a class="navbar-link" href="regex">Regex</a>
                 </li>
 
-                <li><a class="btn btn-primary" style="margin-top: 10px;" href="{% url 'logout' %}">Logout</a></li>
+                <li><a class="btn btn-primary" style="margin-top: 10px; margin-right: 10px;" href="{% url 'logout' %}">Logout</a></li>
                   
                 </ul>
-                <div id="google_translate_element"></div>
+                <div id="google_translate_element" style="margin-top: 25px;"></div>
             </div>
         </div>
     </nav>
 
-    <main>
+    <main class="contMain">
       <article>
-        <section class="section hero" aria-label="hero" data-section>
+        <section class="section hero" aria-label="hero" data-section style="padding: 8vw 2vw 1vw 2vw !important;">
           <div class="start-cont">
+            <figure class="hero-banner">
+              <img
+                src="/static/images/hero-banner1.png"
+                alt="hero banner"
+                class="w-100"
+                style="width: 500px !important; height: 460px !important;"
+              />
+            </figure>
+            
             <div class="hero-content">
               <h1 class="h1 hero-title">
                 Investigate the true Cryptosecuirty
@@ -125,15 +137,7 @@
               </div>
             </div>
 
-            <figure class="hero-banner">
-              <img
-                src="/static/images/hero-banner.png"
-                width="570"
-                height="448"
-                alt="hero banner"
-                class="w-100"
-              />
-            </figure>
+            
           </div>
 
           <script
@@ -143,7 +147,7 @@
         </section>
       </article>
     </main>
-<section class="b2">
+<!-- <section class="b2">
   <div class="contain">
     <div class="b2__wrap"><div class="intro-center _80"><div class="v-space__24" style="transform: translate3d(0px, 0rem, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;"><h2 class="body_medium">Investigation features</h2><p class="body__normal gray1">One cohesive platform to screen, monitor and investigate cryptocurrency wallets, transactions and entities</p></div></div><div class="b2__row" style="transform: translate3d(0px, 0rem, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;"><a href="/products/know-your-vasp" class="b2__item w-inline-block"><div class="w-layout-grid b2__item-inner"><div class="b2__top"><img src="https://assets-global.website-files.com/6082dc5b67056233213587a4/6082dc5b670562e489358816_vasp.svg" loading="lazy" alt="KnowYourVASP" class="b2__image"></div><div class="h-line"></div><div class="b2__bottom"><h3 class="heading__xsmall web-blue-1">Risk Alerts</h3><p class="body__normal">Assess the risk profile of Virtual Asset Service Providers and other crypto businesses </p></div></div><div class="link__cta-block" style="color: rgb(147, 147, 147);"><div>Learn More</div><div class="link__cta-embed w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
       <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -156,7 +160,7 @@
       <polyline points="12 5 19 12 12 19"></polyline>
       </svg></div></div></a></div></div>
   </div>
-</section>
+</section> -->
     
 
     <!-- Add the Bootstrap JS and jQuery links for additional functionality -->

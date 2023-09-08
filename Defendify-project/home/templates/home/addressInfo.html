@@ -9,8 +9,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
         /* Custom CSS for the container */
+        body{
+            color: #fff;
+        }
+        #keyText{
+            color: #c2c2c2;
+        }
         .custom-container {
-            background-color: #f9f9f9;
+            background-color: black;
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -36,6 +42,32 @@
         .custom-list-item {
             list-style-type: none;
             padding: 5px 0;
+        }
+        textarea{
+            background-color: #343a40c0 !important;
+            color: #f9f9f9 !important;
+        }
+        .my-5{
+            padding-top: 1.5vw !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            background-color: black !important;;
+        }
+        ul{
+            list-style: none;
+        }
+        #blockcypherWidget p{
+            color: transparent !important;
+            color: #fff !important;;
+        }
+        #blockcypherWidget body, a{
+            background-color: black !important;
+            color: #fff !important;;
+        }
+        hr{
+            width: 22vw;
+            border-radius: 80vw;
+            color: #c2c2c2;
         }
     </style>
 </head>
@@ -71,24 +103,24 @@
         <div class="container custom-container">
             <h2 class="text-center" id="address-section">Bitcoin Address: {{response.0}}</h2>
             <ul>
-                <li>ADDRESS: {{response.0}}</li>
-                <li>TOTAL RECEIVED: {{response.1}}</li>
-                <li>TOTAL SENT: {{response.2}}</li>
-                <li>BALANCE: {{response.3}}</li>
-                <li>NUMBER OF TRANSACTIONS: {{response.4}}</li>
+                <li><span id="keyText">ADDRESS: </span><br><span id="valueText">{{response.0}}</span></li><br><hr>
+                <li><span id="keyText">TOTAL RECEIVED: </span><br><span id="valueText">{{response.1}}</span></li><br>
+                <li><span id="keyText">TOTAL SENT: </span><br><span id="valueText">{{response.2}}</span></li><br>
+                <li><span id="keyText">BALANCE: </span><br><span id="valueText">{{response.3}}</span></li><br>
+                <li><span id="keyText">NUMBER OF TRANSACTIONS: </span><br><span id="valueText">{{response.4}}</span></li><br>
                 <li>
-                    TRANSACTIONS:
+                    <span id="keyText">TRANSACTIONS:</span>
                     <div class="form-outline mb-4">
-                        <textarea class="form-control" id="textAreaExample1" rows="10">{{response.5}}</textarea>
+                        <br><span id="valueText"></span><textarea class="form-control" id="textAreaExample1" rows="10">{{response.5}}</span></textarea>
                     </div>
                 </li>
-                <li>UNSPENT Transactions:
+                <li><span id="keyText">UNSPENT Transactions:</span>
                     <div class="form-outline mb-4">
-                        <textarea class="form-control" id="textAreaExample1" rows="10">{{response.6}}</textarea>
+                        <br><span id="valueText"></span><textarea class="form-control" id="textAreaExample1" rows="10">{{response.6}}</span></textarea>
                     </div>
                 </li>
-                <li id="data-section">Data: {{response.7}}</li>
-                <li id="wallet-id-section">Wallet Id: {{response.8}}</li>
+                <li id="data-section"><span id="keyText">Data: </span><br><span id="valueText">{{response.7}}</span></li><br>
+                <li id id="keyText"="wallet-id-section"><span id="keyText">Wallet Id: </span><br><span id="valueText">{{response.8}}</span></li><br>
             </ul>
         </div>
     </div>
@@ -96,7 +128,7 @@
     <div class="text-center">
         <ul id="monitor-section">
             <!-- Use a specific ID for the iframe (e.g., "blockcypherWidget") -->
-            <iframe id="blockcypherWidget" src="" style="overflow:hidden;" frameborder="0"></iframe>
+            <iframe id="blockcypherWidget" src="" style="overflow:hidden; background-color: black !important; color: #fff !important; border: none !important;" frameborder="0"></iframe>
         </ul>
     </div>
 
@@ -115,6 +147,49 @@
         const bitcoinAddress = '{{response.0}}'; // Replace this with the actual Bitcoin address from the response variable
         const iframeSrc = `https://live.blockcypher.com/widget/btc/${bitcoinAddress}/balance/`;
         iframe.src = iframeSrc;
+
+
+
+        const jsonString = "{{response.6}}";
+        const jsonObject = JSON.parse(jsonString);
+        const keys = Object.keys(jsonObject);
+        const values = Object.values(jsonObject);
+
+        const table = document.createElement("table");
+        const thead = document.createElement("thead");
+        const tr = document.createElement("tr");
+        const th1 = document.createElement("th");
+        const th2 = document.createElement("th");
+
+        th1.innerHTML = "Key";
+        th2.innerHTML = "Value";
+
+        tr.appendChild(th1);
+        tr.appendChild(th2);
+        thead.appendChild(tr);
+
+        const tbody = document.createElement("tbody");
+
+        for (let i = 0; i < keys.length; i++) {
+        const tr = document.createElement("tr");
+        const td1 = document.createElement("td");
+        const td2 = document.createElement("td");
+
+        td1.innerHTML = keys[i];
+        td2.innerHTML = values[i];
+
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+
+        tbody.appendChild(tr);
+        }
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+
+        document.getElementById("textAreaExample1").innerHTML = table.innerHTML;
+
+
     </script>
 
 </body>
