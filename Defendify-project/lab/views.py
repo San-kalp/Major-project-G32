@@ -34,7 +34,7 @@ uri = "bolt://localhost:7687"
 user = "neo4j"
 password = "12345678"
 driver = GraphDatabase.driver(uri, auth=(user, password))
-session = driver.session(database="test")
+session = driver.session(database="neo4j")
 
 
 def home(request):
@@ -188,7 +188,7 @@ def SageMaker(request):
 # def run_ml_file(request):
 #     try:
 #         # Execute the python ML file and capture its output and error
-#         output = subprocess.check_output(["python", "/Users/sankalpchordia/Desktop/Kavach/Defendify-project/lab/testpad.py"],
+#         output = subprocess.check_output(["python", "/Users/sankalpchordia/Desktop/Defendify/Defendify-project/lab/testpad.py"],
 #                                          stderr=subprocess.STDOUT, text=True)
         
 #         # Assuming that the output is in CSV format

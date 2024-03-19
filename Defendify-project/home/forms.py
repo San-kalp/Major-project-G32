@@ -12,7 +12,14 @@ class addressForm(forms.Form):
     address = forms.CharField(label="address",max_length=100)
 
 class regexForm(forms.Form):
-    regex = forms.CharField(label="regex",max_length=100)
+    regex = forms.CharField(label="",max_length=100)
 
 class ethForm(forms.Form):
     eth_address = forms.CharField(label="eth_address",max_length=100)
+
+class pathFinderForm(forms.Form):
+    source = forms.CharField(label="source",max_length=100)
+    destination = forms.CharField(label="destination",max_length=100)
+
+class checkSanctionForm(forms.Form):
+    address = forms.CharField(label="address", max_length=100)

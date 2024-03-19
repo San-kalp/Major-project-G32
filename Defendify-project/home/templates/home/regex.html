@@ -12,7 +12,7 @@
     <style>
         /* Add your custom styles here */
         body {
-            background-color: #f8f9fa;
+            background-color: #000;
         }
 
         .container {
@@ -31,19 +31,26 @@
         .form-label {
             font-weight: bold;
         }
+        .container{
+            background-color: rgb(193, 184, 184);
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2 class="text-center mb-4">Enter Address : </h2>
+    <h2 class="text-center mb-4">Enter Address  </h2>
     
     <form method="post">
         {% csrf_token %}
+        <div class="text-center">
         {{form}}
+        </div>
         
         <!-- Submit button -->
         <div class="text-center">
+            <br>
+            <br>
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
         <div class="text-center">

@@ -4,7 +4,7 @@ uri = "bolt://localhost:7687"
 user = "neo4j"
 password = "12345678"
 driver = GraphDatabase.driver(uri, auth=(user, password))
-session = driver.session(database="test")
+session = driver.session(database="neo4j")
 
 def handle(query):
     result = session.run(query)

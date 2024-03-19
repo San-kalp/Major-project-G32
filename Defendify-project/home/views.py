@@ -12,7 +12,7 @@ from django.views.generic import CreateView #For signing up new user
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView , LogoutView
 from django.contrib.auth.forms import UserCreationForm
-from .forms import searchForm, walletForm , addressForm , regexForm 
+from .forms import searchForm, walletForm , addressForm , regexForm , pathFinderForm, checkSanctionForm
 from django.http import HttpResponseRedirect
 import requests
 import json
@@ -20,6 +20,7 @@ import datetime
 import re
 from .cryptowallet_risk_scoring.riskreport.client import *
 from .cryptowallet_risk_scoring.riskreport.types import *
+import requests
 
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
@@ -28,6 +29,10 @@ from django.views.generic import CreateView #For signing up new user
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView , LogoutView
 from django.contrib.auth.forms import UserCreationForm
+import networkx as nx 
+from pyvis.network import Network
+
+pairs_list = [[]]
 
 class SignupView(CreateView):
     form_class = UserCreationForm
@@ -236,3 +241,98 @@ def regex(request):
     return render(request, "home/regex.html",context=context)
 
 
+
+
+def path_finder(request):
+    form = pathFinderForm()
+    answer = ""
+    if request.method == "POST":
+        form = pathFinderForm(request.POST)
+        if form.is_valid():
+            source = form.cleaned_data['source']
+            destination = form.cleaned_data['destination']
+
+    
+        url = "https://api.breadcrumbs.one/pathfinder"
+
+        payload = f'{{"search_type":"ShortestPath","chain":"ETH","direction_type":"Incoming","entity_tags":["Exchange"],"source_address":"{source}","destination_addresses":["{destination}"]}}'
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/*+json",
+            "X-API-KEY": "PR8SW5AFK4VRYGVF7XCHVFLSS3CZCK"
+        }
+        
+        ans = requests.post(url, data=payload, headers=headers)
+        parsed_data = json.loads(ans.text)
+        result_paths = parsed_data.get("result_paths", [])
+        list1 = [value for path in result_paths for value in path]
+        
+        pairs_list = [[list1[i], list1[i + 1]] for i in range(0, len(list1) - 1, 1)]
+        print(pairs_list)
+        G = nx.Graph()
+        G.add_edges_from(pairs_list)
+        net = Network()
+        net.from_nx(G)
+        graph = net.save_graph('/Users/sankalpchordia/Downloads/Kavach-main/Defendify-project/home/templates/home/networkpyvis.html')
+        print(graph)
+        answer = ans
+        return HttpResponseRedirect('path-graph')
+     
+    context = {'form':form,'ans':answer}
+    return render(request,'home/path-finder.html',context=context)
+    
+
+def checkSanction(request):
+    form = checkSanctionForm()
+    answer = ""
+    if request.method == "POST":
+        form = checkSanctionForm(request.POST)
+        if form.is_valid():
+            address = form.cleaned_data['address']
+
+        url = "https://api.breadcrumbs.one/node"
+
+        payload = "{\"chain\":\"ETH\"}"
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/*+json",
+            "X-API-KEY": "C7C07C4070338B653394D8CB758277F4"
+        }
+
+        ans = requests.post(url, data=payload, headers=headers).text
+    
+        answer = ans 
+    context = {'form':form,'ans':answer}
+    print(answer)
+    return render(request,'home/networkpyvis.html',context=context)
+
+
+def pathGraph(requests):
+    data = pairs_list
+    context = {'data':data}
+    print(data)
+    return render(requests,'home/networkpyvis.html', context=context)
+
+
+def bitquery(requests):
+
+
+    url = "https://graphql.bitquery.io"
+
+    payload = json.dumps({
+    "query": "query ($network: BitcoinNetwork!, $address: String!, $inboundDepth: Int!, $outboundDepth: Int!, $limit: Int!, $from: ISO8601DateTime, $till: ISO8601DateTime) {\n  bitcoin(network: $network) {\n    inbound: coinpath(\n      initialAddress: {is: $address}\n      depth: {lteq: $inboundDepth}\n      options: {direction: inbound, asc: \"depth\", desc: \"amount\", limitBy: {each: \"depth\", limit: $limit}}\n      date: {since: $from, till: $till}\n    ) {\n      sender {\n        address\n        annotation\n      }\n      receiver {\n        address\n        annotation\n      }\n      amount\n      depth\n      count\n    }\n    outbound: coinpath(\n      initialAddress: {is: $address}\n      depth: {lteq: $outboundDepth}\n      options: {asc: \"depth\", desc: \"amount\", limitBy: {each: \"depth\", limit: $limit}}\n      date: {since: $from, till: $till}\n    ) {\n      sender {\n        address\n        annotation\n      }\n      receiver {\n        address\n        annotation\n      }\n      amount\n      depth\n      count\n    }\n  }\n}\n",
+    "variables": "{\n  \"inboundDepth\": 1,\n  \"outboundDepth\": 1,\n  \"limit\": 10,\n  \"offset\": 0,\n  \"network\": \"bitcoin\",\n  \"address\": \"1CDvcRjY3onVoQSNF2P9esHyts6uZdgD4s\",\n  \"from\": null,\n  \"till\": null,\n  \"dateFormat\": \"%Y-%m\"\n}"
+    })
+    headers = {
+    'Content-Type': 'application/json',
+    'X-API-KEY': 'BQYicsvvA87WQQ117nW0n2et7uSE8xKF',
+    'Authorization': 'Bearer ory_at_g0Dxo7t1SpafXb_xZQIfthVjEib-j1woZAbCF6cw69g.H7qP2BVtQ8MYt862MDdZKnVGIhq5-2vfOQ42xnkjYeE'
+    }
+
+    ans = requests.post(url, headers=headers, data=payload)
+
+    print(ans.text)
+
+    context = {'ans':ans}
+
+    return render(requests,'home/bitquery.html',context=context)

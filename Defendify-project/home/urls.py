@@ -17,6 +17,10 @@ urlpatterns = [
     path("blogs/",views.blogs, name="blogs"),
     path("qrcode/",views.qrcode, name="qrcode"),
     path("regex",views.regex,name = "regex"),
+    path("path-finder",views.path_finder,name="path"),
+    path('checkSanction',views.checkSanction,name="checkSanction"),
+    path('path-graph',views.pathGraph,name='pathGraph'),
+    path('query',views.bitquery,name='bitquery'),
 
 
 

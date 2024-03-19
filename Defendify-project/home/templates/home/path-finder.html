@@ -1,0 +1,23 @@
+<!-- pathfinder_template.html -->
+
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Path Finder</h1>
+    
+    <div class="text-center">
+        <form method="post" >
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Find Path</button>
+        </form>
+
+    
+
+        <h2>Result:</h2>
+        <p>{{ans}}</p>
+
+    </div>
+
+</body>
+</html>
